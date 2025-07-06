@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Assets from "./Assets.tsx"
 import App from "./App.tsx"
 import CreateAssets from "./CreateAssets.tsx"
+import CreateJobs from './CreateJobs.tsx'
 
 Amplify.configure(outputs);
 
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/createAssets",
     element: <CreateAssets />,
+  },
+  {
+    path: "/createJob",
+    element: <CreateJobs />,
   },
 ]);
 

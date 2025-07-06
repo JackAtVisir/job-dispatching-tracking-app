@@ -49,6 +49,13 @@ function Assets() {
     setSelectedAssets([])
   }
 
+  const handleCreateJob = () => {
+    navigate("/createJob", {
+      state: { selectedAssets: selectedAssets }  
+    });
+
+  }
+
   return (
     <div>
       <h1>{user?.signInDetails?.loginId}'s Assets</h1>
@@ -74,7 +81,8 @@ function Assets() {
           );
         })}
       </ul>
-      <button onClick={()=>{handleClear()}}>Clear</button>
+      <button onClick={()=>{handleClear()}}>Clear Selected Assets</button>
+      <button onClick={()=>{handleCreateJob()}}>Create Job</button>
       <button onClick={()=>{navigate('/')}}>Home</button>
     </div>
   );
