@@ -7,9 +7,9 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Jobs from "./Jobs.tsx"
+import Assets from "./Assets.tsx"
 import App from "./App.tsx"
-import CreateJobs from "./CreateJobs.tsx"
+import CreateAssets from "./CreateAssets.tsx"
 
 Amplify.configure(outputs);
 
@@ -21,12 +21,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/jobs",
-    element: <Jobs />,
+    path: "/assets",
+    element: <Assets />,
   },
   {
-    path: "/createJobs",
-    element: <CreateJobs />,
+    path: "/createAssets",
+    element: <CreateAssets />,
   },
 ]);
 

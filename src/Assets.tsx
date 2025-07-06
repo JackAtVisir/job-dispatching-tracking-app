@@ -6,15 +6,15 @@ import { useNavigate } from 'react-router-dom'
 
 const client = generateClient<Schema>();
 
-function Jobs() {
+function Assets() {
 
   const { user } = useAuthenticator();
   const navigate = useNavigate()
-  const [jobs, setJobs] = useState<Array<Schema["Jobs"]["type"]>>([]);
+  const [assets, setAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
 
   useEffect(() => {
-    client.models.Jobs.observeQuery().subscribe({
-      next: (data) => setJobs([...data.items]),
+    client.models.Assets.observeQuery().subscribe({
+      next: (data) => setAssets([...data.items]),
     });
   }, []);
   
@@ -25,12 +25,12 @@ function Jobs() {
 
   return (
     <div>
-      <h1>{user?.signInDetails?.loginId}'s Jobs</h1>
+      <h1>{user?.signInDetails?.loginId}'s Assets</h1>
       <ul>
-        {jobs.map((job) => (
+        {assets.map((asset) => (
           <li 
             onClick={()=>{handleClick()}}
-            key={job.id}>{job.image}
+            key={asset.id}>{asset.name}
           </li>
         ))}
       </ul>
@@ -39,4 +39,4 @@ function Jobs() {
   );
 }
 
-export default Jobs;
+export default Assets;
