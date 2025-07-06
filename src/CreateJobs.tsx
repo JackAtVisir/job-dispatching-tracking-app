@@ -14,17 +14,71 @@ function Jobs () {
 
     const { selectedAssets }: { selectedAssets?: Asset[] } = location.state || {};
     const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([]);
+    const [jobName, setJobName] = useState('')
+    const [selectedUserID, setSelectedUserID] = useState('')
+    const [selectedUsername, setSelectedUsername] = useState('')
 
      useEffect(() => {
         client.models.Users.observeQuery().subscribe({
           next: (data) => setUsers([...data.items]),
         });
       }, []);
-      
+
+    const handleSelectUser = ( user: string, id: string) => {
+
+        setSelectedUsername(user)
+        setSelectedUserID(id)
+    }
+
+    const handleCreateJob = async () => {
+
+      try {
+        const result = await client.models.Jobs.create({
+          name: jobName,
+          completed: false,
+          userID: selectedUserID,
+        });
+    
+        const jobID = result.data?.id;
+        if (!jobID) {
+          console.error("Failed to get job ID");
+          return;
+        }
+
+        if (!selectedAssets) {
+            console.log('No Selected Assets') 
+            return
+        }
+
+        await Promise.all(
+          selectedAssets.map((asset) =>
+            client.models.Assets.update({
+              id: asset.id,
+              jobID: jobID,
+            })
+          )
+        );
+    
+        console.log("Job created and assets updated!");
+      } catch (error) {
+        console.error("Error creating job or updating assets:", error);
+      }
+      navigate('/')
+    };
+
 
     return (
 
         <div>
+         <form>
+           <input
+             type="text"
+             name="jobName"
+             value={jobName}
+             onChange={(e) => setJobName(e.target.value)}
+             placeholder="Job Name"
+           />
+          </form>
           {selectedAssets && selectedAssets.length > 0 ? (
             <ul>
               {selectedAssets.map((asset: Asset)=>(
@@ -38,16 +92,18 @@ function Jobs () {
             <p>No assets selected</p>
           )}
           <div>
-            <p>Assign Job:</p>
+            <p>Job Assigned to: {selectedUsername}</p>
             <ul>
               {users.map((user)=>(
-                <li
-                  key={user.id}>
+                <li 
+                  key={user.id}
+                  onClick={()=>{handleSelectUser(user.username ?? "unnamed", user.id)}}>
                   {user.username}
                 </li>
               ))}
             </ul>
           </div>
+          <button onClick={()=>{handleCreateJob()}}>Create Job</button>
           <button onClick={()=>{navigate('/assets')}}>Back</button>
           <button onClick={()=>{navigate('/')}}>Home</button>
         </div>
