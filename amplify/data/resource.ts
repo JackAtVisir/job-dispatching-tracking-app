@@ -27,11 +27,23 @@ const schema = a.schema({
     name: a.string(),
     assets: a.hasMany('Assets', 'jobID'),
     completed: a.boolean(),
-    user: a.string(),
+    userID: a.string(),
+    user: a.belongsTo('Users', 'userID'),
    })
    .authorization((allow) => [
     allow.owner(),        
     allow.group('Admin'), 
+  ]),
+
+  Users: a
+   .model({
+     username: a.string(),
+     email: a.string(),
+     jobs: a.hasMany('Jobs', 'userID'),
+   })
+   .authorization((allow) => [
+     allow.owner(), 
+     allow.group("Admin"),
   ]),
 
 });

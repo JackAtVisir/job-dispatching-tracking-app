@@ -7,19 +7,25 @@ function Jobs () {
     const navigate = useNavigate()
     const location = useLocation()
 
-    const { selectedAssets: selectedAssets } = location.state || {}
+    const { selectedAssets }: { selectedAssets?: Asset[] } = location.state || {};
 
     return (
 
         <div>
-          <ul>
-            {selectedAssets.map((asset: Asset)=>(
-              <li 
-                key={asset.id}>
-                {asset.name}
-              </li>
-            ))}
-          </ul>
+          {selectedAssets && selectedAssets.length > 0 ? (
+            <ul>
+              {selectedAssets.map((asset: Asset)=>(
+                <li 
+                  key={asset.id}>
+                  {asset.name}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No assets selected</p>
+          )}
+          
+          <button onClick={()=>{navigate('/assets')}}>Back</button>
           <button onClick={()=>{navigate('/')}}>Home</button>
         </div>
     )
