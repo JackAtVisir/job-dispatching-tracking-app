@@ -24,6 +24,7 @@ function CreateAssets() {
          completed: false,
         })
       }    
+      alert(`Assets '${asset}(0-${assetAmount - 1})' Created`)
     }
 
     return (
@@ -36,7 +37,7 @@ function CreateAssets() {
               type="text"
               value={asset}
               onChange={(e) => setAsset(e.target.value)}
-              placeholder="Enter image URL"
+              placeholder="Enter Asset Name"
             />
           </label>
           <label>
