@@ -13,16 +13,26 @@ const schema = a.schema({
       condition: a.string(),
       time: a.integer(),
       completed: a.boolean(),
-      job: a.belongsTo('Jobs', 'job'),
-    }),
+      jobID: a.string(),
+      job: a.belongsTo('Jobs', 'jobID'),
+      
+    })
+    .authorization((allow) => [
+    allow.owner(),        
+    allow.group('Admin'), 
+  ]),
 
   Jobs: a
    .model({
     name: a.string(),
-    assets: a.hasMany('assets', 'job'),
+    assets: a.hasMany('Assets', 'jobID'),
     completed: a.boolean(),
     user: a.string(),
    })
+   .authorization((allow) => [
+    allow.owner(),        
+    allow.group('Admin'), 
+  ]),
 
 });
 
