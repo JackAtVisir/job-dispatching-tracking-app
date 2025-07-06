@@ -42,8 +42,7 @@ const schema = a.schema({
      jobs: a.hasMany('Jobs', 'userID'),
    })
    .authorization((allow) => [
-     allow.owner(), 
-     allow.group("Admin"),
+     allow.authenticated()
   ]),
 
 });

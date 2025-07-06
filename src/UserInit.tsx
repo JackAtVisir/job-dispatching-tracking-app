@@ -6,6 +6,7 @@ import type { Schema } from "../amplify/data/resource"
 const client = generateClient<Schema>()
 
 function UserInit() {
+
   const { user } = useAuthenticator()
 
   useEffect(() => {
