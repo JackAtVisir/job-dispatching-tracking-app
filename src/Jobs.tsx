@@ -58,6 +58,11 @@ function Jobs () {
       fetchAssets()
     }
 
+    const handleDelete = (id: string) => {
+
+        client.models.Jobs.delete({id})
+    }
+
     const handleAssetSelect = () => {
 
     }
@@ -66,15 +71,18 @@ function Jobs () {
 
         <div>
           <h1>{user?.signInDetails?.loginId}'s Jobs</h1>
-          <ul>
-            {jobs.map((job)=>(
-                <li
-                  key={job.id}
-                  onClick={()=>{handleJobSelect(job.id)}}>
-                  {job.name}
-                </li>
-            ))}
-          </ul>
+          { jobs.length > 0 &&
+            <ul>
+              {jobs.map((job)=>(
+                  <li
+                    key={job.id}
+                    onClick={()=>{handleJobSelect(job.id)}}>
+                    {job.name}
+                    <button onClick={()=>{handleDelete(job.id)}}>Delete</button>
+                  </li>
+              ))}
+            </ul>
+          }
           { jobAssets.length > 0 && 
             <div>
               <p>Job Assets:</p>
