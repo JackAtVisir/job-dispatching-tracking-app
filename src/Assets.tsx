@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import type { Schema } from "../amplify/data/resource"
 import { generateClient } from "aws-amplify/data"
-import { useAuthenticator } from '@aws-amplify/ui-react'
 import { useNavigate } from 'react-router-dom'
 
 const client = generateClient<Schema>();

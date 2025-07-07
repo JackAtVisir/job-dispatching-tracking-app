@@ -11,8 +11,8 @@ function App() {
   return (
     <main>
       <h1>Welcome {user?.signInDetails?.loginId}</h1>
-      <button onClick={()=>{navigate('/assets')}}>Assets</button>
       <button onClick={()=>{navigate('/createAssets')}}>Create Assets</button>
+      <button onClick={()=>{navigate('/assets')}}>Assets</button>
       <button onClick={()=>{navigate('/jobs')}}>Jobs</button>
       <button onClick={signOut}>Sign out</button>
     </main>

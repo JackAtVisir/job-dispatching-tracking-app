@@ -16,7 +16,6 @@ const schema = a.schema({
       completed: a.boolean(),
       jobID: a.string(),
       job: a.belongsTo('Jobs', 'jobID'),
-      
     })
     .authorization((allow) => [
     allow.authenticated()       

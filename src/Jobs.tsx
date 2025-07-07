@@ -63,15 +63,18 @@ function Jobs () {
         client.models.Jobs.delete({id})
     }
 
-    const handleAssetSelect = () => {
+    const handleAssetSelect = ( id: string ) => {
 
+        navigate('./AssetForm', {
+          state: { assetID: id }  
+        });
     }
 
     return (
 
         <div>
           <h1>{user?.signInDetails?.loginId}'s Jobs</h1>
-          { jobs.length > 0 &&
+          { jobs.length > 0 &&  
             <ul>
               {jobs.map((job)=>(
                   <li
@@ -90,7 +93,7 @@ function Jobs () {
                 {jobAssets.map((asset)=>(
                   <li
                     key={asset.id}
-                    onClick={()=>{handleAssetSelect()}}>
+                    onClick={()=>{handleAssetSelect(asset.id)}}>
                     {asset.name}
                   </li>
                 ))}
