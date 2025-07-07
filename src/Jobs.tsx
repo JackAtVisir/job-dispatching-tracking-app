@@ -6,32 +6,27 @@ import { useNavigate } from 'react-router-dom'
 
 const client = generateClient<Schema>()
 
-type Asset = { 
-
-    name: string,
-    id: string, 
-    condition: string, 
-    completed: string 
-}
-
 function Jobs () {
     
     const navigate = useNavigate()
     const { user } = useAuthenticator()
     const [jobs, setJobs] = useState<Array<Schema["Jobs"]["type"]>>([])
-    const [jobAssets, setJobAssets] = useState<Asset[]>([])
+    const [jobAssets, setJobAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
+
 
     const userID = user.userId
 
     useEffect(() => {
+
       const fetchJobs = async () => {
+
         const result = await client.models.Jobs.list({
           filter: {
             userID: {
-              eq: userID,
-            },
-          },
-        });
+              eq: userID
+            }
+          }
+        })
 
         if (result?.data) {
           setJobs(result.data)
@@ -39,12 +34,31 @@ function Jobs () {
           console.warn("No jobs found or error occurred:", result?.errors)
         }
       }
-
       fetchJobs()
     }, [])
 
-    const handleJobSelect = () => {
+    const handleJobSelect = (jobID: string) => {
 
+      const fetchAssets = async () => {
+
+        const result = await client.models.Assets.list({
+          filter: {
+            jobID: {
+              eq: jobID
+            }
+          }
+        })
+
+        if (result?.data) {
+            setJobAssets(result.data)
+        } else {
+            console.warn('No assets were dound or error occurred:', result?.errors)
+        }
+      }
+      fetchAssets()
+    }
+
+    const handleAssetSelect = () => {
 
     }
 
@@ -56,11 +70,25 @@ function Jobs () {
             {jobs.map((job)=>(
                 <li
                   key={job.id}
-                  onClick={()=>{handleJobSelect()}}>
+                  onClick={()=>{handleJobSelect(job.id)}}>
                   {job.name}
                 </li>
             ))}
           </ul>
+          { jobAssets.length > 0 && 
+            <div>
+              <p>Job Assets:</p>
+              <ul>
+                {jobAssets.map((asset)=>(
+                  <li
+                    key={asset.id}
+                    onClick={()=>{handleAssetSelect()}}>
+                    {asset.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          } 
           <button onClick={()=>{navigate('/')}}>Home</button>
         </div>
     )
