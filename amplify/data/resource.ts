@@ -12,14 +12,14 @@ const schema = a.schema({
       name: a.string(),
       condition: a.string(),
       time: a.integer(),
+      date: a.string(),
       completed: a.boolean(),
       jobID: a.string(),
       job: a.belongsTo('Jobs', 'jobID'),
       
     })
     .authorization((allow) => [
-    allow.owner(),        
-    allow.group('Admin'), 
+    allow.authenticated()       
   ]),
 
   Jobs: a
@@ -31,8 +31,7 @@ const schema = a.schema({
     user: a.belongsTo('Users', 'userID'),
    })
    .authorization((allow) => [
-    allow.owner(),        
-    allow.group('Admin'), 
+    allow.authenticated(),
   ]),
 
   Users: a

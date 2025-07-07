@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useEffect, useState } from "react"
+import type { Schema } from "../amplify/data/resource"
+import { generateClient } from "aws-amplify/data"
+import { useAuthenticator } from '@aws-amplify/ui-react'
 import { useNavigate } from 'react-router-dom'
 
 const client = generateClient<Schema>();
 
 function Assets() {
 
-  const { user } = useAuthenticator();
   const navigate = useNavigate()
   const [assets, setAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
   const [selectedAssets, setSelectedAssets] = useState<{ name: string; id: string }[]>([])
@@ -58,7 +57,7 @@ function Assets() {
 
   return (
     <div>
-      <h1>{user?.signInDetails?.loginId}'s Assets</h1>
+      <h1>Assets:</h1>
       <ul>
         {assets.map((asset) => {
           const isSelected = selectedAssets.some((selected) => selected.id === asset.id);

@@ -1,11 +1,11 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+import { useEffect, useState } from "react"
+import type { Schema } from "../amplify/data/resource"
+import { generateClient } from "aws-amplify/data"
 
-type Asset = { name: string; id: string };
+type Asset = { name: string; id: string }
 
-const client = generateClient<Schema>();
+const client = generateClient<Schema>()
 
 function Jobs () {
 
@@ -63,7 +63,8 @@ function Jobs () {
       } catch (error) {
         console.error("Error creating job or updating assets:", error);
       }
-      navigate('/')
+      alert(`Job '${jobName}' has been assigned to ${selectedUsername}`)
+      navigate('/assets')
     };
 
 
