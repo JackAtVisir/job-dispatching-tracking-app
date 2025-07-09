@@ -11,14 +11,14 @@ const schema = a.schema({
     .model({
       name: a.string(),
       condition: a.string(),
-      time: a.integer(),
+      time: a.string(),
       date: a.string(),
       completed: a.boolean(),
       jobID: a.string(),
       job: a.belongsTo('Jobs', 'jobID'),
     })
     .authorization((allow) => [
-    allow.authenticated()       
+    allow.authenticated(),    
   ]),
 
   Jobs: a

@@ -20,7 +20,6 @@ function CreateAssets() {
         client.models.Assets.create({  
          name: name,
          condition: 'none',
-         time: 0,
          completed: false,
         })
       }    

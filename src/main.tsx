@@ -32,16 +32,18 @@ const router = createBrowserRouter([
     element: <CreateAssets />,
   },
   {
-    path: "/Jobs",
+    path: "/jobs",
     element: <Jobs />,
+    children: [
+      {
+        path: "assetForm",
+        element: <AssetForm />,
+      },
+    ]
   },
   {
     path: "/createJob",
     element: <CreateJobs />,
-  },
-  {
-    path: "/AssetForm",
-    element: <AssetForm />,
   },
 ]);
 
