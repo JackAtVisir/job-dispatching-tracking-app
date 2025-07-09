@@ -14,7 +14,7 @@ function Jobs () {
     const { user } = useAuthenticator()
     const [jobs, setJobs] = useState<Array<Schema["Jobs"]["type"]>>([])
     const [jobAssets, setJobAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
-    const [selectedjobID, setSelectedJobID] = useState('')
+    const [selectedJobID, setSelectedJobID] = useState('')
     const userID = user.userId
     const refreshAssets = (location.state as { refreshAssets?: boolean } | null)?.refreshAssets
 
@@ -40,8 +40,8 @@ function Jobs () {
     }, [])
 
     useEffect(() => {
-      if (refreshAssets && selectedjobID) {
-        handleJobSelect(selectedjobID);
+      if (refreshAssets && selectedJobID) {
+        handleJobSelect(selectedJobID);
         navigate(location.pathname, { replace: true, state: {} })
       }
     }, [refreshAssets])
@@ -69,7 +69,6 @@ function Jobs () {
     }
 
     const handleDelete = (id: string) => {
-
         client.models.Jobs.delete({id})
     }
 
@@ -78,6 +77,26 @@ function Jobs () {
         navigate('./assetForm', {
           state: { assetID: id, assetName: name }  
         });
+    }
+
+    const handleJobSubmit = async () => {
+
+      const checkAssetCompletion = jobAssets.find((asset)=>(asset.completed === false))
+      if (checkAssetCompletion) {
+        alert('Uncompleted Assets')
+      } else {
+        const result = await client.models.Jobs.update({
+          id: selectedJobID,
+          completed: true
+        })
+        if (result.data) {
+          alert('Job Submitted')
+          navigate('/')
+        } else {
+          console.warn('Update failed:', result.errors) 
+          alert('Something went wrong submitting the job')
+        }
+      }
     }
 
     return (
@@ -109,6 +128,7 @@ function Jobs () {
                   </li>
                 ))}
               </ul>
+              <button onClick={()=>handleJobSubmit()}>Submit Job</button>
             </div>
           } 
           <button onClick={()=>{navigate('/')}}>Home</button>
