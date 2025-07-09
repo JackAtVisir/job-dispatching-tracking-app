@@ -26,6 +26,9 @@ function Jobs () {
           filter: {
             userID: {
               eq: userID
+            },
+            completed: {
+              eq: false
             }
           }
         })
