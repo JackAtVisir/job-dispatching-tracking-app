@@ -15,6 +15,7 @@ import Jobs from "./Jobs.tsx"
 import CreateAssets from "./CreateAssets.tsx"
 import CreateJobs from './CreateJobs.tsx'
 import AssetForm from './AssetForm.tsx'
+import FinishedJobs from "./FinishedJobs.tsx"
 
 Amplify.configure(outputs);
 
@@ -36,14 +37,18 @@ const router = createBrowserRouter([
     element: <Jobs />,
     children: [
       {
-        path: "assetForm",
-        element: <AssetForm />,
-      },
+         path: "assetForm",
+         element: <AssetForm />,
+       },
     ]
   },
   {
     path: "/createJob",
     element: <CreateJobs />,
+  },
+  {
+    path: "/completedJobs",
+    element: <FinishedJobs />,
   },
 ]);
 
