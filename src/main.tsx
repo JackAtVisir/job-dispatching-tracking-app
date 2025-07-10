@@ -17,6 +17,7 @@ import CreateJobs from './componentsAdmin/CreateJobs.tsx'
 import AssetForm from './componentsUser/AssetForm.tsx'
 import FinishedJobs from './componentsUser/FinishedJobs.tsx'
 import UserRole from './UserRole.tsx'
+import AllJobs from './componentsAdmin/AllJobs.tsx'
 
 Amplify.configure(outputs);
 
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: "/userRoles",
     element: <UserRole />,
+  },
+  {
+    path: "/allJobs",
+    element: <AllJobs />,
   },
 
 ]);

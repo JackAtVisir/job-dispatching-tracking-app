@@ -21,6 +21,7 @@ function App() {
         <div>
           <button onClick={() => navigate('/createAssets')}>Create Assets</button>
           <button onClick={() => navigate('/assets')}>Assets</button>
+          <button onClick={() => navigate('/allJobs')}>Jobs</button>
         </div>
       ) : 
         <div>
