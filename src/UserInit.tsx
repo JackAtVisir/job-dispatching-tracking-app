@@ -2,12 +2,15 @@ import { useEffect } from "react"
 import { useAuthenticator } from "@aws-amplify/ui-react"
 import { generateClient } from "aws-amplify/data"
 import type { Schema } from "../amplify/data/resource"
+import { useSetAtom } from "jotai"
+import { userRoleAtom } from "./atoms/userAtoms"
 
 const client = generateClient<Schema>()
 
 function UserInit() {
 
   const { user } = useAuthenticator()
+  const setUserRole = useSetAtom(userRoleAtom)
 
   useEffect(() => {
     const syncUser = async () => {
@@ -19,22 +22,32 @@ function UserInit() {
 
       try {
         const existing = await client.models.Users.get({ id: userId })
-        if (!existing.data) {
-          await client.models.Users.create({
+      
+        let userRecord = existing.data
+      
+        if (!userRecord) {
+          const newUser = await client.models.Users.create({
             id: userId,
             username,
             email,
-          });
+            role: "",
+          })
+          userRecord = newUser.data
           console.log("User created in database")
         } else {
           console.log("User already exists")
         }
+      
+        setUserRole(userRecord?.role ?? "")
+      
       } catch (error) {
         console.error("Error syncing user:", error)
       }
+
     }
 
     syncUser()
+    
   }, [user])
 
   return null
