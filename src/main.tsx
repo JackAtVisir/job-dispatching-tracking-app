@@ -16,6 +16,7 @@ import CreateAssets from "./CreateAssets.tsx"
 import CreateJobs from './CreateJobs.tsx'
 import AssetForm from './AssetForm.tsx'
 import FinishedJobs from "./FinishedJobs.tsx"
+import UserRole from './UserRole.tsx'
 
 Amplify.configure(outputs);
 
@@ -50,6 +51,11 @@ const router = createBrowserRouter([
     path: "/completedJobs",
     element: <FinishedJobs />,
   },
+  {
+    path: "/userRoles",
+    element: <UserRole />,
+  },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

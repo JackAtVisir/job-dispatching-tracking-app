@@ -38,6 +38,7 @@ const schema = a.schema({
      username: a.string(),
      email: a.string(),
      jobs: a.hasMany('Jobs', 'userID'),
+     role: a.string(),
    })
    .authorization((allow) => [
      allow.authenticated()

@@ -15,6 +15,7 @@ function App() {
       <button onClick={()=>{navigate('/assets')}}>Assets</button>
       <button onClick={()=>{navigate('/jobs')}}>Jobs</button>
       <button onClick={()=>{navigate('/completedJobs')}}>Completed Jobs</button>
+      <button onClick={()=>{navigate('/userRoles')}}>User Roles</button>
       <button onClick={signOut}>Sign out</button>
     </main>
   );
