@@ -17,14 +17,17 @@ function App() {
     <main>
       <h1>Welcome {user?.signInDetails?.loginId}</h1>
   
-      {userRole === 'admin' && (
+      {userRole === 'admin' ? (
         <div>
           <button onClick={() => navigate('/createAssets')}>Create Assets</button>
           <button onClick={() => navigate('/assets')}>Assets</button>
         </div>
-      )}
-      <button onClick={() => navigate('/jobs')}>Jobs</button>
-      <button onClick={() => navigate('/completedJobs')}>Completed Jobs</button>
+      ) : 
+        <div>
+          <button onClick={() => navigate('/jobs')}>Jobs</button>
+          <button onClick={() => navigate('/completedJobs')}>Completed Jobs</button>
+        </div>
+      }
       <button onClick={() => navigate('/userRoles')}>User Roles</button>
       <button onClick={signOut}>Sign out</button>
     </main>

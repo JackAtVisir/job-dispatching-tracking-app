@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
-import type { Schema } from "../amplify/data/resource"
+import type { Schema } from "../../amplify/data/resource"
 import { generateClient } from "aws-amplify/data"
 import { useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
-import { userRoleAtom } from './atoms/userAtoms' 
+import { userRoleAtom } from '../atoms/userAtoms' 
 
 const client = generateClient<Schema>();
 

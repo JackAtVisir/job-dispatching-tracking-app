@@ -10,12 +10,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import UserInit from "./UserInit.tsx"
 
 import App from "./App.tsx"
-import Assets from "./Assets.tsx"
-import Jobs from "./Jobs.tsx"
-import CreateAssets from "./CreateAssets.tsx"
-import CreateJobs from './CreateJobs.tsx'
-import AssetForm from './AssetForm.tsx'
-import FinishedJobs from "./FinishedJobs.tsx"
+import Assets from "./componentsAdmin/Assets.tsx"
+import Jobs from "./componentsUser/Jobs.tsx"
+import CreateAssets from "./componentsAdmin/CreateAssets.tsx"
+import CreateJobs from './componentsAdmin/CreateJobs.tsx'
+import AssetForm from './componentsUser/AssetForm.tsx'
+import FinishedJobs from './componentsUser/FinishedJobs.tsx'
 import UserRole from './UserRole.tsx'
 
 Amplify.configure(outputs);
