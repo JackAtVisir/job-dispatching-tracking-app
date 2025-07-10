@@ -2,6 +2,8 @@ import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
+import { useSetAtom } from "jotai"
+import { userRoleAtom } from "./atoms/userAtoms"
 
 const client = generateClient<Schema>();
 
@@ -9,6 +11,7 @@ function UserRole () {
     
     const navigate = useNavigate()
     const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([]);
+    const setUserRole = useSetAtom(userRoleAtom)
 
     useEffect(() => {
       client.models.Users.observeQuery().subscribe({
@@ -26,11 +29,13 @@ function UserRole () {
             id: id,
             role: ''
         })
+        setUserRole('')
       } else {
         client.models.Users.update({
             id: id,
             role: 'admin'
         })
+        setUserRole('admin')
       }
     }
 
