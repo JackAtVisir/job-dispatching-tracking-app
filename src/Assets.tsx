@@ -2,12 +2,18 @@ import { useEffect, useState } from "react"
 import type { Schema } from "../amplify/data/resource"
 import { generateClient } from "aws-amplify/data"
 import { useNavigate } from 'react-router-dom'
+import { useAtom } from 'jotai'
+import { userRoleAtom } from './atoms/userAtoms' 
 
 const client = generateClient<Schema>();
 
 function Assets() {
 
   const navigate = useNavigate()
+
+  const [userRole] = useAtom(userRoleAtom)
+  if (userRole !== 'admin') {navigate('/')}
+
   const [assets, setAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
   const [selectedAssets, setSelectedAssets] = useState<{ name: string; id: string }[]>([])
 

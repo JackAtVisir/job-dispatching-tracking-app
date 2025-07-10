@@ -2,29 +2,30 @@ import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom'
+import { useAtom } from 'jotai'
+import { userRoleAtom } from './atoms/userAtoms' 
 
 const client = generateClient<Schema>();
 
 function CreateAssets() {
 
-    const [asset, setAsset] = useState('')
-    const [assetAmount, setAssetAmount] = useState(0)
+  const navigate = useNavigate()
+  const [userRole] = useAtom(userRoleAtom)
+    if (userRole !== 'admin') {navigate('/')}
 
-    const navigate = useNavigate()
-
-    const handleSubmit = () => {
-
-      for (let i = 0; i < assetAmount; i++) {
-        const name = `${asset}${i}`
-
-        client.models.Assets.create({  
-         name: name,
-         condition: 'none',
-         completed: false,
-        })
-      }    
-      alert(`Assets '${asset}(0-${assetAmount - 1})' Created`)
-    }
+  const [asset, setAsset] = useState('')
+  const [assetAmount, setAssetAmount] = useState(0)
+  const handleSubmit = () => {
+    for (let i = 0; i < assetAmount; i++) {
+      const name = `${asset}${i}`
+      client.models.Assets.create({  
+       name: name,
+       condition: 'none',
+       completed: false,
+      })
+    }    
+    alert(`Assets '${asset}(0-${assetAmount - 1})' Created`)
+  }
 
     return (
 
