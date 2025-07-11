@@ -1,7 +1,7 @@
 import { useNavigate, useLocation} from "react-router"
 import { generateClient } from "aws-amplify/data"
 import type { Schema } from "../../amplify/data/resource"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const client = generateClient<Schema>()
 
@@ -10,15 +10,33 @@ function AssetForm () {
     const navigate = useNavigate()
     const location = useLocation()
 
-    const { assetID, assetName } = location.state as {
-      assetID: string,
-      assetName: string
+    const {assetID} = location.state as {
+      assetID: string
     }
+
     const [formData, setFormData] = useState({
       condition: '',
       time: '',
       date: '',
     })
+
+    useEffect(() => {
+      const getAsset = async () => {
+        const result = await client.models.Assets.get({ id: assetID });
+        if (result?.data) {
+          setFormData({
+            condition: result.data.condition ?? '',
+            time: '',
+            date: '',
+          })
+        } else {
+          console.warn("No asset found or error occurred", result?.errors);
+        }
+      };
+    
+      getAsset();
+    }, [assetID]);
+
 
     const handleSubmit = async () => {
 
@@ -44,7 +62,6 @@ function AssetForm () {
     return (
 
         <div>
-          <p>{assetName}</p>
           <form onSubmit={(e)=>{
             e.preventDefault()
             handleSubmit()

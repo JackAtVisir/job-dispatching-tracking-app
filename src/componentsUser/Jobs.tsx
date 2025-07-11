@@ -15,6 +15,7 @@ function Jobs () {
     const [jobs, setJobs] = useState<Array<Schema["Jobs"]["type"]>>([])
     const [jobAssets, setJobAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
     const [selectedJobID, setSelectedJobID] = useState('')
+    const [selectedAsset, setSelectedAsset] = useState('')
     const userID = user.userId
     const refreshAssets = (location.state as { refreshAssets?: boolean } | null)?.refreshAssets
 
@@ -71,10 +72,11 @@ function Jobs () {
       fetchAssets()
     }
 
-    const handleAssetSelect = ( id: string, name: string ) => {
+    const handleAssetSelect = ( id: string) => {
 
+        setSelectedAsset(id)
         navigate('./assetForm', {
-          state: { assetID: id, assetName: name }  
+          state: {assetID: id}  
         });
     }
 
@@ -121,7 +123,10 @@ function Jobs () {
                 {jobAssets.map((asset)=>(
                   <li
                     key={asset.id}
-                    onClick={()=>{handleAssetSelect(asset.id, asset.name ?? '')}}>
+                    onClick={()=>{handleAssetSelect(asset.id)}}
+                    style={{
+                    backgroundColor: selectedAsset === asset.id ? 'lightgreen' : 'white',
+              }}>
                     {asset.name} {asset.completed ? '✅' : ''}
                   </li>
                 ))}
