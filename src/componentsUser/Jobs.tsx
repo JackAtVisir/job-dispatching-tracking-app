@@ -71,10 +71,6 @@ function Jobs () {
       fetchAssets()
     }
 
-    const handleDelete = (id: string) => {
-        client.models.Jobs.delete({id})
-    }
-
     const handleAssetSelect = ( id: string, name: string ) => {
 
         navigate('./assetForm', {
@@ -113,7 +109,6 @@ function Jobs () {
                     key={job.id}
                     onClick={()=>{handleJobSelect(job.id)}}>
                     {job.name}
-                    <button onClick={()=>{handleDelete(job.id)}}>Delete</button>
                   </li>
               ))}
             </ul>

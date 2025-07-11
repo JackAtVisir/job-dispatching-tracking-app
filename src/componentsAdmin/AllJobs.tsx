@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react"
 import type { Schema } from "../../amplify/data/resource"
 import { generateClient } from "aws-amplify/data"
+import { useNavigate } from "react-router"
+import { useAtom } from 'jotai'
+import { userRoleAtom } from '../atoms/userAtoms' 
 
 const client = generateClient<Schema>()
 
 function AllJobs ()  {
 
+    const navigate = useNavigate()
+  
+    const [userRole] = useAtom(userRoleAtom)
+    if (userRole !== 'admin') {navigate('/')}
+
     const [jobs, setJobs] = useState<Array<Schema["Jobs"]["type"]>>([])
-    const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([]);
+    const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([])  
+    const [jobAssets, setJobAssets] = useState<Array<Schema["Assets"]["type"]>>([])
 
     useEffect(() => {
       client.models.Jobs.observeQuery().subscribe({
@@ -18,6 +27,31 @@ function AllJobs ()  {
       })
     }, [])
 
+    const handleDelete = (id: string) => {
+      client.models.Jobs.delete({id})
+    }
+
+    const handleJobSelect = (jobID: string) => {
+
+      const fetchAssets = async () => {
+
+        const result = await client.models.Assets.list({
+          filter: {
+            jobID: {
+              eq: jobID
+            }
+          }
+        })
+
+        if (result?.data) {
+            setJobAssets(result.data)
+        } else {
+            console.warn('No assets were dound or error occurred:', result?.errors)
+        }
+      }
+      fetchAssets()
+    }
+
   return (
 
       <div>
@@ -25,12 +59,24 @@ function AllJobs ()  {
         <ul>
           {jobs.map((job)=>(
             <li
-            key={job.id}>
-            {`${job.name} ${users.find((user)=>(user.id===job.userID))?.username}`}
+              key={job.id}
+              onClick={()=>{handleJobSelect(job.id)}}>
+              {`${job.name} ${users.find((user)=>(user.id===job.userID))?.username}`}
+              <button onClick={()=>{handleDelete(job.id)}}>Delete</button>
             </li>
           ))}
         </ul>
-          
+        { jobAssets.length > 0 && 
+          <ul>
+            {jobAssets.map((asset)=>(
+              <li
+                key={asset.id}>
+              {`${asset.name} ${asset.condition ?? ''} ${asset.completed ? '✅' : ''}`}
+              </li>
+            ))}
+          </ul>
+        }
+        <button onClick={()=>{navigate('/')}}>Home</button> 
       </div>
   )
 }

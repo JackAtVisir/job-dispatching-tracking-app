@@ -20,7 +20,6 @@ function CreateAssets() {
       const name = `${asset}${i}`
       client.models.Assets.create({  
        name: name,
-       condition: 'none',
        completed: false,
       })
     }    
