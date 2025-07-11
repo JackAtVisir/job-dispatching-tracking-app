@@ -44,6 +44,15 @@ const schema = a.schema({
      allow.authenticated()
   ]),
 
+  AssetType: a
+  .model({
+    types: a.string()
+  })
+  .authorization((allow) => [
+    allow.authenticated(),
+  ])
+
+
 });
 
 export type Schema = ClientSchema<typeof schema>;
