@@ -51,40 +51,43 @@ function AssetForm () {
           }}>
           <label>
             Condition
-            <input
-              type="text"
+            <select
               value={formData.condition}
-              placeholder={"Enter Asset Condition"}
               onChange={(e) => {
                 const newData = {
                   condition: e.target.value,
                   time: formData.time,
                   date: formData.date
-                }
-                setFormData(newData)
+                };
+                setFormData(newData);
               }}
-            />
+            >
+              <option value="">-- Select Condition --</option>
+              <option value="Fully Operational">Fully Operational</option>
+              <option value="Partially Operational">Partially Operational</option>
+              <option value="Maintenance Needed">Maintenance Needed</option>
+              <option value="Critical">Critical - Immediate Attention</option>
+              <option value="Out Of Service">Out of Service</option>
+            </select>
           </label>
           <label>
             Time
             <input
-              type='text'
-              value={formData.time} 
-              placeholder='Enter Time' 
+              type="time"
+              value={formData.time}
               onChange={(e) => {
-                const newData = {
-                  condition: formData.condition,
-                  time: e.target.value,
-                  date: formData.date
-                }
-                setFormData(newData)
+                setFormData({
+                  ...formData,
+                  time: e.target.value
+                });
               }}
             />
           </label>
+
           <label>
             Date
             <input
-              type='text'
+              type='date'
               value={formData.date} 
               placeholder='Enter Date'
               onChange={(e) => {
