@@ -5,9 +5,9 @@ import type { Schema } from "../amplify/data/resource"
 import { useSetAtom } from "jotai"
 import { userRoleAtom } from "./atoms/userAtoms"
 
-const client = generateClient<Schema>()
-
 function UserInit() {
+
+  const client = generateClient<Schema>()
 
   const { user } = useAuthenticator()
   const setUserRole = useSetAtom(userRoleAtom)

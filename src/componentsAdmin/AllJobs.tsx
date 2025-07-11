@@ -5,14 +5,18 @@ import { useNavigate } from "react-router"
 import { useAtom } from 'jotai'
 import { userRoleAtom } from '../atoms/userAtoms' 
 
-const client = generateClient<Schema>()
-
 function AllJobs ()  {
+
+  const client = generateClient<Schema>()
 
     const navigate = useNavigate()
   
     const [userRole] = useAtom(userRoleAtom)
-    if (userRole !== 'admin') {navigate('/')}
+    useEffect(() => {
+    if (userRole !== 'admin') {
+      navigate('/')
+    }
+  }, [userRole])
 
     const [jobs, setJobs] = useState<Array<Schema["Jobs"]["type"]>>([])
     const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([])  
@@ -71,7 +75,7 @@ function AllJobs ()  {
             {jobAssets.map((asset)=>(
               <li
                 key={asset.id}>
-              {`${asset.name} ${asset.condition ?? ''} ${asset.completed ? '✅' : ''}`}
+              {`${asset.category}${asset.number} ${asset.condition ?? ''} ${asset.completed ? '✅' : ''}`}
               </li>
             ))}
           </ul>

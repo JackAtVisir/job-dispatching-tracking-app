@@ -5,17 +5,21 @@ import { useNavigate } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import { userRoleAtom } from '../atoms/userAtoms' 
 
-const client = generateClient<Schema>();
-
 function Assets() {
+
+  const client = generateClient<Schema>()
 
   const navigate = useNavigate()
 
   const [userRole] = useAtom(userRoleAtom)
-  if (userRole !== 'admin') {navigate('/')}
+  useEffect(() => {
+    if (userRole !== 'admin') {
+      navigate('/')
+    }
+  }, [userRole])
 
   const [assets, setAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
-  const [selectedAssets, setSelectedAssets] = useState<{ name: string; id: string }[]>([])
+  const [selectedAssets, setSelectedAssets] = useState<{ category: string; number: number; id: string }[]>([])
 
   useEffect(() => {
     client.models.Assets.observeQuery().subscribe({
@@ -23,7 +27,7 @@ function Assets() {
     });
   }, []);
   
-  const handleSelect = (name: string, id: string) => {
+  const handleSelect = (category: string, number: number, id: string) => {
 
     const isSelected = selectedAssets.some(asset => asset.id === id);
   
@@ -31,7 +35,7 @@ function Assets() {
       const updatedAssets = selectedAssets.filter(asset => asset.id !== id);
       setSelectedAssets(updatedAssets);
     } else {
-      const currentAsset = { name, id };
+      const currentAsset = { category, number, id };
       setSelectedAssets([...selectedAssets, currentAsset]);
     }
   };
@@ -74,8 +78,8 @@ function Assets() {
                 backgroundColor: isSelected ? 'lightgreen' : 'white',
               }}
             >
-              {asset.name}
-              <button onClick={() => handleSelect(asset.name ?? 'unnamed asset', asset.id)}>
+              {`${asset.category} ${asset.number}`}
+              <button onClick={() => handleSelect(asset.category ?? '', asset.number ?? 0, asset.id)}>
                 {isSelected ? 'Deselect' : 'Select'}
               </button>
               <button onClick={() => handleDelete(asset.id)}>

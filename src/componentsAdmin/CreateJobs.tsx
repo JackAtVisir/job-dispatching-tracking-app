@@ -2,15 +2,24 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from "react"
 import type { Schema } from "../../amplify/data/resource"
 import { generateClient } from "aws-amplify/data"
+import { useAtom } from 'jotai'
+import { userRoleAtom } from '../atoms/userAtoms' 
 
-type Asset = { name: string; id: string }
-
-const client = generateClient<Schema>()
+type Asset = { category: string; number: number; id: string }
 
 function Jobs () {
 
+  const client = generateClient<Schema>()
+
     const navigate = useNavigate()
     const location = useLocation()
+    const [userRole] = useAtom(userRoleAtom)
+    
+      useEffect(() => {
+        if (userRole !== 'admin') {
+          navigate('/')
+        }
+      }, [userRole])
 
     const { selectedAssets }: { selectedAssets?: Asset[] } = location.state || {};
     const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([]);
@@ -85,7 +94,7 @@ function Jobs () {
               {selectedAssets.map((asset: Asset)=>(
                 <li 
                   key={asset.id}>
-                  {asset.name}
+                  {`${asset.category} ${asset.number}`}
                 </li>
               ))}
             </ul>

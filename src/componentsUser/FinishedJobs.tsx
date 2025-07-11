@@ -4,9 +4,9 @@ import { generateClient } from "aws-amplify/data";
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { useNavigate } from "react-router";
 
-const client = generateClient<Schema>()
-
 function FinishedJobs () {
+
+  const client = generateClient<Schema>()
 
     const navigate = useNavigate()
     const { user } = useAuthenticator()

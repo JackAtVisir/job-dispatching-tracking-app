@@ -5,9 +5,9 @@ import { useAuthenticator } from '@aws-amplify/ui-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Outlet } from 'react-router-dom'
 
-const client = generateClient<Schema>()
-
 function Jobs () {
+
+  const client = generateClient<Schema>()
     
     const navigate = useNavigate()
     const location = useLocation()
@@ -127,7 +127,7 @@ function Jobs () {
                     style={{
                     backgroundColor: selectedAsset === asset.id ? 'lightgreen' : 'white',
               }}>
-                    {asset.name} {asset.completed ? '✅' : ''}
+                    {`${asset.category}${asset.number} ${asset.completed ? '✅' : ''}`}
                   </li>
                 ))}
               </ul>

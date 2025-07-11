@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom'
 import { useSetAtom } from "jotai"
 import { userRoleAtom } from "./atoms/userAtoms"
 
-const client = generateClient<Schema>();
-
 function UserRole () {
+
+  const client = generateClient<Schema>()
     
     const navigate = useNavigate()
     const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([]);

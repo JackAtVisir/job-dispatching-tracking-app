@@ -3,9 +3,9 @@ import { generateClient } from "aws-amplify/data"
 import type { Schema } from "../../amplify/data/resource"
 import { useState, useEffect } from "react"
 
-const client = generateClient<Schema>()
-
 function AssetForm () {
+
+  const client = generateClient<Schema>()
 
     const navigate = useNavigate()
     const location = useLocation()
