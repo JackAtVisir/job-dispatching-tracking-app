@@ -25,12 +25,28 @@ function Assets() {
   const [selectedRegion, setSelectedRegion] = useState('')
 
   useEffect(() => {
-    client.models.Assets.observeQuery().subscribe({
-      next: (data) => setAssets([...data.items]),
-    });
+
     client.models.AssetFilters.observeQuery().subscribe({
-          next: (data) => setAssetFilters([...data.items]),
-        });
+      next: (data) => setAssetFilters([...data.items]),
+    });
+    
+    const fetchAssets = async () => {
+
+      const result = await client.models.Assets.list()
+
+      if (result?.data) {
+        const sortedAssets = result.data.sort((a, b) => {
+        const categoryCompare = (a.category ?? '').localeCompare(b.category ?? '')
+        if (categoryCompare !== 0) return categoryCompare
+        return (a.number ?? 0) - (b.number ?? 0)
+      })
+
+setAssets(sortedAssets);
+      } else {
+        console.warn('No Assets found or error occurred:', result?.errors)
+      }
+    }
+    fetchAssets()
   }, []);
   
   const handleSelect = (category: string, number: number, id: string) => {
