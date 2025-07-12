@@ -20,52 +20,17 @@ function CreateAssets() {
   }, [userRole])
 
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedRegion, setSelectedRegion] = useState('')
   const [assetAmount, setAssetAmount] = useState(0)
   const [newCategory, setNewCategory] = useState('')
-  const [categories, setCategories] = useState<Array<Schema["AssetCategories"]["type"]>>([]);
+  const [newRegion, setNewRegion] = useState('')
+  const [assetFilters, setAssetFilters] = useState<Array<Schema["AssetFilters"]["type"]>>([])
 
   useEffect(() => {
-      client.models.AssetCategories.observeQuery().subscribe({
-        next: (data) => setCategories([...data.items]),
+      client.models.AssetFilters.observeQuery().subscribe({
+        next: (data) => setAssetFilters([...data.items]),
       });
-    }, []);
-
-  // const handleSubmit = () => {
-
-  //   const createNewAssets = async () => {
-  //     const result = await client.models.Assets.list({
-  //       filter: {
-  //         category: {
-  //           eq: selectedCategory
-  //         }
-  //       }
-  //     })
-
-  //     if (result?.data) {
-
-  //       const highestNumber = result.data.reduce((max, asset) => {
-  //         const num = asset.number ?? -Infinity
-  //         return num > max ? num : max
-  //       }, -Infinity)
-
-  //       const nextNumber = highestNumber === -Infinity ? 0 : highestNumber + 1
-
-  //       for (let i = 0; i < assetAmount; i++) {
-  //         client.models.Assets.create({  
-  //          category: selectedCategory,
-  //          number: nextNumber + i,
-  //          completed: false,
-  //         })
-  //       }    
-  //       alert(`Assets '${selectedCategory} (${nextNumber}-${nextNumber + assetAmount - 1})' Created`)
-
-  //     } else {
-  //       console.warn('No assets dound or error occurred:', result?.errors)
-  //     }
-
-  //   }
-  //   createNewAssets()
-  // }
+    }, [])
 
   const createNewAssets = async () => {
   const result = await client.models.Assets.list({
@@ -84,6 +49,7 @@ function CreateAssets() {
       Array.from({ length: assetAmount }, (_, i) =>
         client.models.Assets.create({
           category: selectedCategory,
+          region: selectedRegion,
           number: nextNumber + i,
           completed: false,
         })
@@ -118,37 +84,67 @@ function CreateAssets() {
   }
 
 
-  const handleNewType = () => {
+  const handleNewCategory = () => {
 
     if (newCategory !== '') {
 
-       client.models.AssetCategories.create({
+       client.models.AssetFilters.create({
          category: newCategory
        })
        setNewCategory('')
     }
   }
 
+   const handleNewRegion = () => {
+
+    if (newRegion !== '') {
+
+       client.models.AssetFilters.create({
+         region: newRegion
+       })
+       setNewRegion('')
+    }
+  }
+
     return (
 
       <div>
-        <form onSubmit={(e)=>{
-            e.preventDefault()
-            handleNewType()
-          }}>
-          <label>
-            New Asset Category
-            <input
-              type="text"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-              placeholder="Enter Asset Type"
-            />
-          </label>
-          <button type="submit">
-            Add Category
-          </button>
-        </form>
+        <div>
+          <form onSubmit={(e)=>{
+              e.preventDefault()
+              handleNewCategory()
+            }}>
+            <label>
+              New Asset Category
+              <input
+                type="text"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                placeholder="Enter Asset Category"
+              />
+            </label>
+            <button type="submit">
+              Add Category
+            </button>
+          </form>
+          <form onSubmit={(e)=>{
+              e.preventDefault()
+              handleNewRegion()
+            }}>
+            <label>
+              New Asset Region
+              <input
+                type="text"
+                value={newRegion}
+                onChange={(e) => setNewRegion(e.target.value)}
+                placeholder="Enter Asset Region"
+              />
+            </label>
+            <button type="submit">
+              Add Region
+            </button>
+          </form>
+        </div>
         <form onSubmit={handleSubmit}>
           <label>
             Select Category
@@ -157,11 +153,31 @@ function CreateAssets() {
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="">-- Select Category --</option>
-              {categories.map((category)=>(
+              {assetFilters
+              .filter((filters) => filters.category)
+              .map((category)=>(
                 <option 
                   value={category.category ?? ''}
                   key={category.id}>
                   {category.category}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Select Region
+            <select
+              value={selectedRegion}
+              onChange={(e) => setSelectedRegion(e.target.value)}
+            >
+              <option value="">-- Select Region --</option>
+              {assetFilters
+              .filter((filters) => filters.region)
+              .map((region)=>(
+                <option 
+                  value={region.region ?? ''}
+                  key={region.id}>
+                  {region.region}
                 </option>
               ))}
             </select>

@@ -46,9 +46,10 @@ const schema = a.schema({
      allow.authenticated()
   ]),
 
-  AssetCategories: a
+  AssetFilters: a
   .model({
-    category: a.string()
+    category: a.string(),
+    region: a.string(),
   })
   .authorization((allow) => [
     allow.authenticated(),
