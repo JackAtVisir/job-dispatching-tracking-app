@@ -20,11 +20,17 @@ function Assets() {
 
   const [assets, setAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
   const [selectedAssets, setSelectedAssets] = useState<{ category: string; number: number; id: string }[]>([])
+  const [assetFilters, setAssetFilters] = useState<Array<Schema["AssetFilters"]["type"]>>([])
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedRegion, setSelectedRegion] = useState('')
 
   useEffect(() => {
     client.models.Assets.observeQuery().subscribe({
       next: (data) => setAssets([...data.items]),
     });
+    client.models.AssetFilters.observeQuery().subscribe({
+          next: (data) => setAssetFilters([...data.items]),
+        });
   }, []);
   
   const handleSelect = (category: string, number: number, id: string) => {
@@ -64,31 +70,93 @@ function Assets() {
 
   }
 
+  const handleFilterSelect = () => {
+
+  }
+
   return (
     <div>
       <h1>Assets:</h1>
-      <ul>
-        {assets.map((asset) => {
-          const isSelected = selectedAssets.some((selected) => selected.id === asset.id);
-      
-          return (
-            <li
-              key={asset.id}
-              style={{
-                backgroundColor: isSelected ? 'lightgreen' : 'white',
-              }}
+      <div>
+        <form onSubmit={handleFilterSelect}>
+          <label>
+            Select Category
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
             >
-              {`${asset.category} ${asset.number}`}
-              <button onClick={() => handleSelect(asset.category ?? '', asset.number ?? 0, asset.id)}>
-                {isSelected ? 'Deselect' : 'Select'}
-              </button>
-              <button onClick={() => handleDelete(asset.id)}>
-                Delete
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+              <option value="">-- Select Category --</option>
+              {assetFilters
+              .filter((filters) => filters.category)
+              .map((category)=>(
+                <option 
+                  value={category.category ?? ''}
+                  key={category.id}>
+                  {category.category}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Select Region
+            <select
+              value={selectedRegion}
+              onChange={(e) => setSelectedRegion(e.target.value)}
+            >
+              <option value="">-- Select Region --</option>
+              {assetFilters
+              .filter((filters) => filters.region)
+              .map((region)=>(
+                <option 
+                  value={region.region ?? ''}
+                  key={region.id}>
+                  {region.region}
+                </option>
+              ))}
+            </select>
+          </label>
+        </form>
+      </div>
+      <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+        <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
+          {assets
+            .filter((asset) =>
+              (selectedCategory === '' || asset.category === selectedCategory) &&
+              (selectedRegion === '' || asset.region === selectedRegion)
+            )
+            .map((asset) => {
+              const isSelected = selectedAssets.some((selected) => selected.id === asset.id);
+      
+              return (
+                <li
+                  key={asset.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '4px 0',
+                    backgroundColor: isSelected ? 'lightgreen' : undefined,
+                  }}
+                >
+                  <span style={{ flex: 1 }}>
+                    {asset.category} {asset.number}
+                  </span>
+                  <span style={{ flex: 1, textAlign: 'center' }}>
+                    {asset.region ?? ''}
+                  </span>
+                  <span style={{ flex: 1, textAlign: 'right', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                    <button onClick={() => handleSelect(asset.category ?? '', asset.number ?? 0, asset.id)}>
+                      {isSelected ? 'Deselect' : 'Select'}
+                    </button>
+                    <button onClick={() => handleDelete(asset.id)} style={{ marginLeft: '8px' }}>
+                      Delete
+                    </button>
+                  </span>
+                </li>
+              );
+            })}
+        </ul>
+      </div>
       <button onClick={()=>{handleClear()}}>Clear Selected Assets</button>
       <button onClick={()=>{handleCreateJob()}}>Create Job</button>
       <button onClick={()=>{navigate('/')}}>Home</button>
