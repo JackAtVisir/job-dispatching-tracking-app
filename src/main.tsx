@@ -23,44 +23,27 @@ Amplify.configure(outputs);
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
-  },
-  {
-    path: "/assets",
-    element: <Assets />,
-  },
-  {
-    path: "/createAssets",
-    element: <CreateAssets />,
-  },
-  {
-    path: "/jobs",
-    element: <Jobs />,
-    children: [
+    children: [ 
+      { path: 'assets', element: <Assets /> },
+      { path: 'createAssets', element: <CreateAssets /> },
+      { path: 'createJob', element: <CreateJobs /> },
+      { path: 'completedJobs', element: <FinishedJobs /> },
+      { path: 'userRoles', element: <UserRole /> },
+      { path: 'allJobs', element: <AllJobs /> },
       {
-         path: "assetForm",
-         element: <AssetForm />,
-       },
+        path: 'jobs',
+        element: <Jobs />,
+        children: [
+          {
+            path: 'assetForm',
+            element: <AssetForm />,
+          }
+        ]
+      },
     ]
-  },
-  {
-    path: "/createJob",
-    element: <CreateJobs />,
-  },
-  {
-    path: "/completedJobs",
-    element: <FinishedJobs />,
-  },
-  {
-    path: "/userRoles",
-    element: <UserRole />,
-  },
-  {
-    path: "/allJobs",
-    element: <AllJobs />,
-  },
-
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

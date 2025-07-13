@@ -1,38 +1,27 @@
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useNavigate } from 'react-router-dom';
-import { useAtom } from 'jotai'
-import { userRoleAtom } from './atoms/userAtoms' 
-
-
+import { Outlet } from 'react-router-dom'
+import Sidebar from './Sidebar'
+import Topbar from './Topbar'
 
 function App() {
 
-  const { user, signOut } = useAuthenticator();
-  const [userRole] = useAtom(userRoleAtom)
-  const navigate = useNavigate()
-  
-  
   return (
 
-    <main>
-      <h1>Welcome {user?.signInDetails?.loginId}</h1>
-  
-      {userRole === 'admin' ? (
-        <div>
-          <button onClick={() => navigate('/createAssets')}>Create Assets</button>
-          <button onClick={() => navigate('/assets')}>Assets</button>
-          <button onClick={() => navigate('/allJobs')}>Jobs</button>
-        </div>
-      ) : 
-        <div>
-          <button onClick={() => navigate('/jobs')}>Jobs</button>
-          <button onClick={() => navigate('/completedJobs')}>Completed Jobs</button>
-        </div>
-      }
-      <button onClick={() => navigate('/userRoles')}>User Roles</button>
-      <button onClick={signOut}>Sign out</button>
-    </main>
+    <div style={{ 
+      display: 'flex', 
+      height: '100vh' 
+    }}>
+      <Topbar />
+      <Sidebar />
+      <main style={{ 
+        padding: '1rem', 
+        paddingTop: '50px', 
+        flex: 1 
+      }}>
+        <Outlet />
+      </main>
+    </div>
   )
 }
+
 
 export default App;

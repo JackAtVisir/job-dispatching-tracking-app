@@ -80,6 +80,7 @@ function Jobs () {
     return (
 
         <div>
+          <h1>Create Job</h1>
          <form>
            <input
              type="text"
@@ -115,7 +116,6 @@ function Jobs () {
           </div>
           <button onClick={()=>{handleCreateJob()}}>Create Job</button>
           <button onClick={()=>{navigate('/assets')}}>Back</button>
-          <button onClick={()=>{navigate('/')}}>Home</button>
         </div>
     )
 }

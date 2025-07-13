@@ -103,7 +103,7 @@ function Jobs () {
     return (
 
         <div>
-          <h1>{user?.signInDetails?.loginId}'s Jobs</h1>
+          <h1>Jobs</h1>
           { jobs.length > 0 &&  
             <ul>
               {jobs.map((job)=>(
@@ -127,14 +127,13 @@ function Jobs () {
                     style={{
                     backgroundColor: selectedAsset === asset.id ? 'lightgreen' : 'white',
               }}>
-                    {`${asset.category}${asset.number} ${asset.completed ? '✅' : ''}`}
+                    {`${asset.category} ${asset.number} ${asset.completed ? '✅' : ''}`}
                   </li>
                 ))}
               </ul>
               <button onClick={()=>handleJobSubmit()}>Submit Job</button>
             </div>
           } 
-          <button onClick={()=>{navigate('/')}}>Home</button>
         </div>
     )
 }

@@ -92,7 +92,7 @@ setAssets(sortedAssets);
 
   return (
     <div>
-      <h1>Assets:</h1>
+      <h1>Assets</h1>
       <div>
         <form onSubmit={handleFilterSelect}>
           <label>
@@ -175,7 +175,6 @@ setAssets(sortedAssets);
       </div>
       <button onClick={()=>{handleClear()}}>Clear Selected Assets</button>
       <button onClick={()=>{handleCreateJob()}}>Create Job</button>
-      <button onClick={()=>{navigate('/')}}>Home</button>
     </div>
   );
 }

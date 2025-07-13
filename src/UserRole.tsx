@@ -1,7 +1,6 @@
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'
 import { useSetAtom } from "jotai"
 import { userRoleAtom } from "./atoms/userAtoms"
 
@@ -9,7 +8,6 @@ function UserRole () {
 
   const client = generateClient<Schema>()
     
-    const navigate = useNavigate()
     const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([]);
     const setUserRole = useSetAtom(userRoleAtom)
 
@@ -52,7 +50,6 @@ function UserRole () {
                     </li>
                 ))}
             </ul>
-            <button onClick={()=>{navigate('/')}}>Home</button>
         </div>
     )
 }

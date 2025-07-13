@@ -80,7 +80,6 @@ function AllJobs ()  {
             ))}
           </ul>
         }
-        <button onClick={()=>{navigate('/')}}>Home</button> 
       </div>
   )
 }

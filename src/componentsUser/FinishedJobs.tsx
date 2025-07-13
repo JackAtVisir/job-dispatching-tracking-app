@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import type { Schema } from "../../amplify/data/resource";  
 import { generateClient } from "aws-amplify/data";
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useNavigate } from "react-router";
 
 function FinishedJobs () {
 
   const client = generateClient<Schema>()
 
-    const navigate = useNavigate()
     const { user } = useAuthenticator()
     const [jobs, setJobs] = useState<Array<Schema["Jobs"]["type"]>>([])
     const userID = user.userId
@@ -54,7 +52,6 @@ function FinishedJobs () {
                 </li>
             ))}
           </ul>
-          <button onClick={()=>{navigate('/')}}>Home</button>
         </div>
     )
 }

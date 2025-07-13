@@ -110,6 +110,7 @@ function CreateAssets() {
 
       <div>
         <div>
+          <h1>Create Assets</h1>
           <form onSubmit={(e)=>{
               e.preventDefault()
               handleNewCategory()
@@ -147,7 +148,7 @@ function CreateAssets() {
         </div>
         <form onSubmit={handleSubmit}>
           <label>
-            Select Category
+            Category: 
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -165,7 +166,7 @@ function CreateAssets() {
             </select>
           </label>
           <label>
-            Select Region
+            Region: 
             <select
               value={selectedRegion}
               onChange={(e) => setSelectedRegion(e.target.value)}
@@ -200,7 +201,6 @@ function CreateAssets() {
             Add Asset
           </button>
         </form>
-        <button onClick={()=>{navigate('/')}}>Home</button>
       </div>
     )
 }
