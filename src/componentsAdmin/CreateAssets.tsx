@@ -105,104 +105,171 @@ function CreateAssets() {
        setNewRegion('')
     }
   }
-
-    return (
-
-      <div>
-        <div>
-          <h1>Create Assets</h1>
-          <form onSubmit={(e)=>{
+    
+  return (
+    <div>
+      <h1 style={{ marginBottom: '1rem' }}>Create Assets</h1>
+      <div
+        style={{
+          display: 'flex',
+          gap: '2rem',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div
+          style={{
+            flex: '1 1 300px',
+            maxWidth: '480px',
+            padding: '1rem',
+            boxSizing: 'border-box',
+            borderRadius: '8px',
+          }}
+        >
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+                Category
+              </label>
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.4rem',
+                  boxSizing: 'border-box',
+                }}
+              >
+                <option value="">-- Select Category --</option>
+                {assetFilters
+                  .filter((filters) => filters.category)
+                  .map((category) => (
+                    <option value={category.category ?? ''} key={category.id}>
+                      {category.category}
+                    </option>
+                  ))}
+              </select>
+            </div>
+  
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+                Region
+              </label>
+              <select
+                value={selectedRegion}
+                onChange={(e) => setSelectedRegion(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.4rem',
+                  boxSizing: 'border-box',
+                }}
+              >
+                <option value="">-- Select Region --</option>
+                {assetFilters
+                  .filter((filters) => filters.region)
+                  .map((region) => (
+                    <option value={region.region ?? ''} key={region.id}>
+                      {region.region}
+                    </option>
+                  ))}
+              </select>
+            </div>
+  
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={{ display: 'block', marginBottom: '0.25rem' }}>
+                Asset Amount
+              </label>
+              <input
+                type="number"
+                step="1"
+                value={assetAmount}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10)
+                  if (!isNaN(value)) {
+                    setAssetAmount(value)
+                  }
+                }}
+                style={{
+                  width: '100%',
+                  padding: '0.4rem',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+  
+            <button type="submit" style={{ padding: '0.4rem 0.8rem' }}>
+              Add Asset
+            </button>
+          </form>
+        </div>
+  
+        {/* Right: Add Category & Region forms */}
+        <div
+          style={{
+            flex: '1 1 300px',
+            maxWidth: '480px',
+            padding: '1rem',
+            boxSizing: 'border-box',
+            borderRadius: '8px',
+          }}
+        >
+          <form
+            onSubmit={(e) => {
               e.preventDefault()
               handleNewCategory()
-            }}>
-            <label>
+            }}
+            style={{ marginBottom: '1rem' }}
+          >
+            <label style={{ display: 'block', marginBottom: '0.25rem' }}>
               New Asset Category
-              <input
-                type="text"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                placeholder="Enter Asset Category"
-              />
             </label>
-            <button type="submit">
+            <input
+              type="text"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+              placeholder="Enter Asset Category"
+              style={{
+                width: '100%',
+                padding: '0.4rem',
+                marginBottom: '0.5rem',
+                boxSizing: 'border-box',
+              }}
+            />
+            <button type="submit" style={{ padding: '0.4rem 0.8rem' }}>
               Add Category
             </button>
           </form>
-          <form onSubmit={(e)=>{
+  
+          <form
+            onSubmit={(e) => {
               e.preventDefault()
               handleNewRegion()
-            }}>
-            <label>
+            }}
+          >
+            <label style={{ display: 'block', marginBottom: '0.25rem' }}>
               New Asset Region
-              <input
-                type="text"
-                value={newRegion}
-                onChange={(e) => setNewRegion(e.target.value)}
-                placeholder="Enter Asset Region"
-              />
             </label>
-            <button type="submit">
+            <input
+              type="text"
+              value={newRegion}
+              onChange={(e) => setNewRegion(e.target.value)}
+              placeholder="Enter Asset Region"
+              style={{
+                width: '100%',
+                padding: '0.4rem',
+                marginBottom: '0.5rem',
+                boxSizing: 'border-box',
+              }}
+            />
+            <button type="submit" style={{ padding: '0.4rem 0.8rem' }}>
               Add Region
             </button>
           </form>
         </div>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Category: 
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="">-- Select Category --</option>
-              {assetFilters
-              .filter((filters) => filters.category)
-              .map((category)=>(
-                <option 
-                  value={category.category ?? ''}
-                  key={category.id}>
-                  {category.category}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Region: 
-            <select
-              value={selectedRegion}
-              onChange={(e) => setSelectedRegion(e.target.value)}
-            >
-              <option value="">-- Select Region --</option>
-              {assetFilters
-              .filter((filters) => filters.region)
-              .map((region)=>(
-                <option 
-                  value={region.region ?? ''}
-                  key={region.id}>
-                  {region.region}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Asset Amount
-            <input
-              type='number'
-              step='1'
-              value={assetAmount}
-              onChange={(e) => {
-                const value = parseInt(e.target.value, 10);
-                if (!isNaN(value)) {
-                  setAssetAmount(value);
-                }
-              }}
-            />
-          </label>
-          <button type="submit">
-            Add Asset
-          </button>
-        </form>
       </div>
-    )
+    </div>
+  )
 }
 
 export default CreateAssets
