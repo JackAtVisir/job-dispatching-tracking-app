@@ -34,7 +34,7 @@ function Sidebar() {
               <button onClick={() => navigate('/completedJobs')}>Completed Jobs</button>
             </>
           )}
-          <button onClick={() => navigate('/userRoles')}>User Roles</button>
+          <button onClick={() => navigate('/users')}>Users</button>
         </div>
       </nav>
     </aside>
