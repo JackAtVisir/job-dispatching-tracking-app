@@ -57,31 +57,92 @@ function AllJobs ()  {
     }
 
   return (
-
-      <div>
+  <div>
+    <div
+      style={{
+        display: 'flex',
+        gap: '2rem',
+        alignItems: 'flex-start',
+      }}
+    >
+      {/* Jobs Column */}
+      <div style={{ flex: '1 1 40%' }}>
         <h1>Jobs</h1>
-        <ul>
-          {jobs.map((job)=>(
+        <ul
+          style={{
+            listStyle: 'none',
+            padding: 0,
+            margin: 0,
+            borderRight: '1px solid #ddd',
+          }}
+        >
+          {jobs.map((job) => (
             <li
               key={job.id}
-              onClick={()=>{handleJobSelect(job.id)}}>
-              {`${job.name} ${users.find((user)=>(user.id===job.userID))?.username}`}
-              <button onClick={()=>{handleDelete(job.id)}}>Delete</button>
+              onClick={() => handleJobSelect(job.id)}
+              style={{
+                padding: '0.5rem',
+                cursor: 'pointer',
+                borderBottom: '1px solid #eee',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <span>
+                {job.name}{" "}
+                {users.find((user) => user.id === job.userID)?.username ?? ""}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleDelete(job.id)
+                }}
+                style={{
+                  padding: '0.25rem 0.5rem',
+                  fontSize: '0.85rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>
-        { jobAssets.length > 0 && 
-          <ul>
-            {jobAssets.map((asset)=>(
+      </div>
+
+      <div style={{ flex: '1 1 60%' }}>
+        <h1>Assets</h1>
+        {jobAssets.length > 0 ? (
+          <ul
+            style={{
+              listStyle: 'none',
+              padding: 0,
+              margin: 0,
+            }}
+          >
+            {jobAssets.map((asset) => (
               <li
-                key={asset.id}>
-              {`${asset.category}${asset.number} ${asset.condition ?? ''} ${asset.completed ? '✅' : ''}`}
+                key={asset.id}
+                style={{
+                  padding: '0.5rem 0',
+                  borderBottom: '1px solid #eee',
+                }}
+              >
+                {`${asset.category}${asset.number} ${asset.condition ?? ''} ${
+                  asset.completed ? '✅' : ''
+                }`}
               </li>
             ))}
           </ul>
-        }
+        ) : (
+          <p style={{ color: '#888' }}>Select a job to view its assets.</p>
+        )}
       </div>
-  )
+    </div>
+  </div>
+)
+
 }
 
 export default AllJobs
