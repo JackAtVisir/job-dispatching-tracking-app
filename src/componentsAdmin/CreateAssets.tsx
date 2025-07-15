@@ -2,8 +2,9 @@ import type { Schema } from "../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { userRoleAtom } from '../atoms/userAtoms' 
+import { selectedAssetsAtom } from "../atoms/assetAtoms";
 
 
 function CreateAssets() {
@@ -19,6 +20,7 @@ function CreateAssets() {
     }
   }, [userRole])
 
+  const setSelectedAssets = useSetAtom(selectedAssetsAtom)
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedRegion, setSelectedRegion] = useState('')
   const [assetAmount, setAssetAmount] = useState(0)
@@ -33,41 +35,58 @@ function CreateAssets() {
     }, [])
 
   const createNewAssets = async () => {
-  const result = await client.models.Assets.list({
-    filter: { category: { eq: selectedCategory } }
-  })
 
-  if (result?.data) {
-    const highestNumber = result.data.reduce((max, asset) => {
-      const num = asset.number ?? -Infinity;
-      return num > max ? num : max;
-    }, -Infinity);
-
-    const nextNumber = highestNumber === -Infinity ? 0 : highestNumber + 1;
-
-    await Promise.all(
-      Array.from({ length: assetAmount }, (_, i) =>
-        client.models.Assets.create({
-          category: selectedCategory,
-          region: selectedRegion,
-          number: nextNumber + i,
-          completed: false,
-        })
-      )
-    );
-
-    alert(`Assets '${selectedCategory} (${nextNumber}-${nextNumber + assetAmount - 1})' Created`);
-  } else {
-    console.warn("No assets found or error occurred:", result?.errors);
-    throw new Error("Failed to list assets");
+    const result = await client.models.Assets.list({
+      filter: { category: { eq: selectedCategory } }
+    })
+  
+    if (result?.data) {
+      const highestNumber = result.data.reduce((max, asset) => {
+        const num = asset.number ?? -Infinity;
+        return num > max ? num : max;
+      }, -Infinity);
+  
+      const nextNumber = highestNumber === -Infinity ? 0 : highestNumber + 1;
+  
+      const createResult = await Promise.all(
+        Array.from({ length: assetAmount }, (_, i) =>
+          client.models.Assets.create({
+            category: selectedCategory,
+            region: selectedRegion,
+            number: nextNumber + i, 
+            completed: false,
+          })
+        )
+      );
+  
+      alert(`Assets '${selectedCategory} (${nextNumber}-${nextNumber + assetAmount - 1})' Created`);
+  
+      const newAssets = createResult.map((res) => ({
+        id: res.data!.id!,
+        category: res.data!.category!,
+        number: res.data!.number!,
+        region: res.data!.region ?? undefined
+       
+      }))
+      setSelectedAssets(newAssets)
+      navigate('/assets')
+  
+      console.log('New Assets: ', newAssets)
+    } else {
+      console.warn("No assets found or error occurred:", result?.errors);
+      throw new Error("Failed to list assets");
+    }
   }
-}
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
   
     if (!selectedCategory) {
       alert("Please select a category first.")
+      return
+    }
+    if (!selectedRegion) {
+      alert("Please select a region first.")
       return
     }
     if (assetAmount <= 0) {
@@ -81,8 +100,7 @@ function CreateAssets() {
       console.error("Error creating assets:", error)
       alert("Failed to create assets. See console for details.")
     }
-  }
-
+  } 
 
   const handleNewCategory = () => {
 
