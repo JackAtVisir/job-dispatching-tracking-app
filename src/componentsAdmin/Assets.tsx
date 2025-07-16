@@ -44,7 +44,7 @@ function Assets() {
         return (a.number ?? 0) - (b.number ?? 0)
       })
 
-setAssets(sortedAssets);
+        setAssets(sortedAssets);
       } else {
         console.warn('No Assets found or error occurred:', result?.errors)
       }

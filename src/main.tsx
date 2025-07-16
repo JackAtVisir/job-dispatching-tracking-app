@@ -18,6 +18,7 @@ import AssetForm from './componentsUser/AssetForm.tsx'
 import FinishedJobs from './componentsUser/FinishedJobs.tsx'
 import Users from './Users.tsx'
 import AllJobs from './componentsAdmin/AllJobs.tsx'
+import Alerts from "./Alerts.tsx"
 
 Amplify.configure(outputs);
 
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: 'completedJobs', element: <FinishedJobs /> },
       { path: 'users', element: <Users /> },
       { path: 'allJobs', element: <AllJobs /> },
+      { path: 'alerts', element: <Alerts /> },
       {
         path: 'jobs',
         element: <Jobs />,

@@ -81,7 +81,6 @@ function AssetForm () {
             >
               <option value="">-- Select Condition --</option>
               <option value="Fully Operational">Fully Operational</option>
-              <option value="Partially Operational">Partially Operational</option>
               <option value="Maintenance Needed">Maintenance Needed</option>
               <option value="Critical">Critical - Immediate Attention</option>
               <option value="Out Of Service">Out of Service</option>
