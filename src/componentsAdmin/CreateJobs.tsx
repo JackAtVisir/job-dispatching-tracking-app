@@ -1,9 +1,10 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { useEffect, useState } from "react"
 import type { Schema } from "../../amplify/data/resource"
 import { generateClient } from "aws-amplify/data"
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { userRoleAtom } from '../atoms/userAtoms' 
+import { selectedAssetsAtom } from "../atoms/assetAtoms";
 
 type Asset = { category: string; number: number; id: string }
 
@@ -12,7 +13,6 @@ function Jobs () {
   const client = generateClient<Schema>()
 
     const navigate = useNavigate()
-    const location = useLocation()
     const [userRole] = useAtom(userRoleAtom)
     
       useEffect(() => {
@@ -21,7 +21,8 @@ function Jobs () {
         }
       }, [userRole])
 
-    const { selectedAssets }: { selectedAssets?: Asset[] } = location.state || {};
+    const [selectedAssets] = useAtom(selectedAssetsAtom)
+    const setSelectedAssets = useSetAtom(selectedAssetsAtom)
     const [users, setUsers] = useState<Array<Schema["Users"]["type"]>>([]);
     const [jobName, setJobName] = useState('')
     const [selectedUserID, setSelectedUserID] = useState('')
@@ -73,6 +74,7 @@ function Jobs () {
         console.error("Error creating job or updating assets:", error);
       }
       alert(`Job '${jobName}' has been assigned to ${selectedUsername}`)
+      setSelectedAssets([])
       navigate('/assets')
     };
 

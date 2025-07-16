@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 import type { Schema } from "../../amplify/data/resource"
 import { generateClient } from "aws-amplify/data"
 import { useNavigate } from 'react-router-dom'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { userRoleAtom } from '../atoms/userAtoms' 
+import { selectedAssetsAtom } from "../atoms/assetAtoms";
 
 function Assets() {
 
@@ -18,8 +19,10 @@ function Assets() {
     }
   }, [userRole])
 
+  const [selectedAssets] = useAtom(selectedAssetsAtom)
+  const setSelectedAssets = useSetAtom(selectedAssetsAtom)
+
   const [assets, setAssets] = useState<Array<Schema["Assets"]["type"]>>([]);
-  const [selectedAssets, setSelectedAssets] = useState<{ category: string; number: number; id: string }[]>([])
   const [assetFilters, setAssetFilters] = useState<Array<Schema["AssetFilters"]["type"]>>([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedRegion, setSelectedRegion] = useState('')
@@ -80,9 +83,7 @@ setAssets(sortedAssets);
   }
 
   const handleCreateJob = () => {
-    navigate("/createJob", {
-      state: { selectedAssets: selectedAssets }  
-    });
+    navigate("/createJob")
 
   }
 
